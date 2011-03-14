@@ -54,8 +54,8 @@ class TextBox:
             file = open(self.filename, "w")
             file.write(text)
             file.close()
+            textbuffer.set_modified(False)
         dialog.destroy()
-        textbuffer.set_modified(False)
 
     def save(self, data=None):
         if self.filename == "":
@@ -130,8 +130,8 @@ class TextBox:
             text = file.read()
             textbuffer.set_text(text)
             file.close()
+            textbuffer.set_modified(False)
         dialog.destroy()
-        textbuffer.set_modified(False)
 
     def menubar(self):
         mb = gtk.MenuBar()
