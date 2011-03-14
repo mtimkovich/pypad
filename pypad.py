@@ -27,6 +27,7 @@ class TextBox:
         return answer
 
     def save_as(self, data=None):
+        textbuffer = self.textview.get_buffer()
         dialog = gtk.FileChooserDialog("Save file",
                                        None,
                                        gtk.FILE_CHOOSER_ACTION_SAVE,
@@ -46,7 +47,6 @@ class TextBox:
         response = dialog.run()
         if response == gtk.RESPONSE_OK:
             self.filename = dialog.get_filename()
-            textbuffer = self.textview.get_buffer()
             print "Saved file: " + self.filename
             index = self.filename.replace("\\","/").rfind("/") + 1
             text = textbuffer.get_text(textbuffer.get_start_iter() , textbuffer.get_end_iter())
@@ -133,22 +133,7 @@ class TextBox:
         dialog.destroy()
         textbuffer.set_modified(False)
 
-    def __init__(self):
-        self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-        self.window.connect("delete_event", self.delete_event)
-        self.window.set_title("Untitled - PyPad")
-        self.window.set_default_size(750, 450)
-#         self.window.set_border_width(10)
-
-        self.filename = ""
-
-        # hbox holds the menubar, container holds hbox and everything else
-        container = gtk.VBox(False, 0)
-        hbox = gtk.HBox(False, 0)
-
-        container.pack_start(hbox, False, False, 0)
-
-        # Create the menubar
+    def menubar(self):
         mb = gtk.MenuBar()
 
         filemenu = gtk.Menu()
@@ -201,8 +186,24 @@ class TextBox:
 
         mb.append(filem)
         mb.append(helpm)
-        hbox.pack_start(mb, False, False, 0)
-        # End creating menubar
+        self.hbox.pack_start(mb, False, False, 0)
+
+    def __init__(self):
+        self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+        self.window.connect("delete_event", self.delete_event)
+        self.window.set_title("Untitled - PyPad")
+        self.window.set_default_size(750, 450)
+
+        self.filename = ""
+
+        # hbox holds the menubar, container holds hbox and everything else
+        container = gtk.VBox(False, 0)
+        self.hbox = gtk.HBox(False, 0)
+
+        container.pack_start(self.hbox, False, False, 0)
+
+        # Create the menubar
+        self.menubar()
 
         # Create scrolling window
         sw = gtk.ScrolledWindow()
