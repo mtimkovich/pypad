@@ -8,7 +8,7 @@ class TextBox:
         about = gtk.AboutDialog()
         about.set_program_name("PyPad")
         about.set_version("0.1")
-        about.set_copyright("Copyright (c) xeeew")
+        about.set_copyright("Copyright (c) 2011 Max Timkovich")
         about.set_comments("A simple GTK text editor")
         about.set_logo(gtk.gdk.pixbuf_new_from_file("pypad.png"))
         about.run()
