@@ -24,7 +24,11 @@ class TextBox:
         d.vbox.pack_start(label)
         answer = d.run()
         d.destroy()
-        return answer
+        if answer == 0:
+            return 0
+        elif answer == 2:
+            self.save()
+        return 1
 
     def save_as(self, data=None):
         textbuffer = self.textview.get_buffer()
@@ -74,13 +78,9 @@ class TextBox:
     def delete_event(self, widget, data=None):
         textbuffer = self.textview.get_buffer()
         if textbuffer.get_modified():
-            # Cancel = 0, No = 1, Yes = 2
-            user = self.confirm_dialog()
-
-            if user == 0:
+            a = self.confirm_dialog()
+            if a == 0:
                 return True
-            elif user == 2:
-                self.save()
 
         gtk.main_quit()
         return False
@@ -88,13 +88,9 @@ class TextBox:
     def new_file(self, data=None):
         textbuffer = self.textview.get_buffer()
         if textbuffer.get_modified():
-            # Cancel = 0, No = 1, Yes = 2
-            user = self.confirm_dialog()
-
-            if user == 0:
+            a = self.confirm_dialog()
+            if a == 0:
                 return
-            elif user == 2:
-                self.save()
 
         self.window.set_title("Untitled - PyPad")
         textbuffer.set_text("")
@@ -102,6 +98,11 @@ class TextBox:
 
     def open_file(self, data=None):
         textbuffer = self.textview.get_buffer()
+        if textbuffer.get_modified():
+            a = self.confirm_dialog()
+            if a == 0:
+                return
+
         dialog = gtk.FileChooserDialog("Open..",
                                        None,
                                        gtk.FILE_CHOOSER_ACTION_OPEN,
