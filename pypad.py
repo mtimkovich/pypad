@@ -15,13 +15,16 @@ class TextBox:
         about.destroy()
 
     def confirm_dialog(self):
-        d = gtk.Dialog()
-        d.set_default_size(300, 150)
-        d.add_buttons(gtk.STOCK_CANCEL, 0, gtk.STOCK_NO, 1, gtk.STOCK_YES, 2)
         index = self.filename.replace("\\","/").rfind("/") + 1
-        label = gtk.Label("Save changes to '" + (self.filename[index:] or "Untitled") + "'?")
-        label.show()
-        d.vbox.pack_start(label)
+        label_text = "Save changes to '" + (self.filename[index:] or "Untitled") + "'?"
+        d = gtk.MessageDialog(self.window, 
+                              gtk.DIALOG_DESTROY_WITH_PARENT,
+                              gtk.MESSAGE_QUESTION, 
+                              gtk.BUTTONS_NONE, 
+                              label_text)
+        d.set_default_size(300, 150)
+        d.set_resizable(False)
+        d.add_buttons(gtk.STOCK_CANCEL, 0, gtk.STOCK_NO, 1, gtk.STOCK_YES, 2)
         answer = d.run()
         d.destroy()
         if answer == 0:
